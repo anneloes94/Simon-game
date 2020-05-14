@@ -1,8 +1,15 @@
 
 let gamePattern = []
 let userClickedPattern = []
+let level = 0
 
 const buttonColours = ["red", "blue", "green", "yellow"]
+
+$(document).keydown(function() {
+  nextSequence()
+  $("h1").html(`Level ${level}`)
+
+})
 
 /*
   3. USER SELECTS COLOURS
@@ -31,6 +38,7 @@ function nextSequence() {
     Each turn, a colour is picked through selecting a random number (0 - 3)
     This colour is then added to the gamePattern array
   */
+  level++
   let randomNumber = Math.floor(Math.random() * 4)
   let randomChosenColour = buttonColours[randomNumber]
   gamePattern.push(randomChosenColour)
