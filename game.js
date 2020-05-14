@@ -15,7 +15,15 @@ $('.btn').click(function() {
   userClickedPattern.push(userChosenColour)
   // console.log(userClickedPattern)
   playSound(userChosenColour)
+  animatePress(userChosenColour)
 })
+
+function animatePress(currentColour) {
+  $(`#${currentColour}`).addClass("pressed")
+  setTimeout(() => {
+    $(`#${currentColour}`).removeClass("pressed")
+  }, 100)
+}
 
 function nextSequence() {
   /* 
