@@ -2,19 +2,17 @@
 let gamePattern = []
 let userClickedPattern = []
 let level = 0
+let started = false
 
 const buttonColours = ["red", "blue", "green", "yellow"]
 
 $(document).keydown(function() {
-  nextSequence()
-  $("h1").html(`Level ${level}`)
-
+  if (!started) {
+    $("#level-title").html(`Level ${level}`)
+    nextSequence()
+    started = true
+  }
 })
-
-/*
-  3. USER SELECTS COLOURS
-  the users selects a colour, which gets added to the userClickedPattern array
-*/
 
 
 $('.btn').click(function() {
@@ -23,37 +21,28 @@ $('.btn').click(function() {
   // console.log(userClickedPattern)
   playSound(userChosenColour)
   animatePress(userChosenColour)
+  checkAnswer(userClickedPattern.length - 1)
 })
 
-function animatePress(currentColour) {
-  $(`#${currentColour}`).addClass("pressed")
-  setTimeout(() => {
-    $(`#${currentColour}`).removeClass("pressed")
-  }, 100)
-}
-
 function nextSequence() {
-  /* 
-    1. CREATE ARRAY
-    Each turn, a colour is picked through selecting a random number (0 - 3)
-    This colour is then added to the gamePattern array
-  */
   level++
+
   let randomNumber = Math.floor(Math.random() * 4)
   let randomChosenColour = buttonColours[randomNumber]
   gamePattern.push(randomChosenColour)
   
-  /* 
-    2. CREATE EFFECT
-    the button creates an animate ffect and plays a sound after click
-  */
-  $(`#${randomChosenColour}`).animate({opacity: 0.5}).animate({opacity: 1})
-  
-  playSound(randomChosenColour)
-  
+ $(`#${randomChosenColour}`).animate({opacity: 0.5}).animate({opacity: 1})
 
+ playSound(randomChosenColour)  
+}
 
-  
+function checkAnswer(currentLevel) {
+  if (userClickedPattern[currentLevel] === gamePattern[currentLevel]){
+    console.log(`${userClickedPattern[currentLevel]} - ${gamePattern[currentLevel]}`)
+    console.log("right")
+  } else {
+    console.log("wrong")
+  }
 }
 
 function playSound(name) {
@@ -61,6 +50,9 @@ function playSound(name) {
   colourSoundEffect.play()
 }
 
-
-
-
+function animatePress(currentColour) {
+  $(`#${currentColour}`).addClass("pressed")
+  setTimeout(() => {
+    $(`#${currentColour}`).removeClass("pressed")
+  }, 100)
+}
